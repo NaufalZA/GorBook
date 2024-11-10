@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'services/auth_service.dart';
 import 'screens/booking_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/login_screen.dart';  // Add this import
+import 'screens/signup_screen.dart';  // Add this import
+import 'screens/register_screen.dart';  // Update this import
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final authService = AuthService();
+  await authService.init();
+  
+  runApp(
+    ChangeNotifierProvider.value(
+      value: authService,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,17 +26,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'GOR Booking App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (_) => AuthService(),
+      child: MaterialApp(
+        title: 'GOR Booking App',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const SplashScreen(),  // Use SplashScreen as initial route
+          '/home': (context) => const HomePage(),
+          '/login': (context) => const LoginScreen(),  // Add this route
+          '/signup': (context) => const SignupScreen(),  // Add this route
+          '/register': (context) => const RegisterScreen(),  // Update this route
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const SplashScreen(),  // Use SplashScreen as initial route
-        '/home': (context) => const HomePage(),
-      },
     );
   }
 }

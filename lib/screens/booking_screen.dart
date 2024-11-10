@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../services/auth_service.dart';
 import 'reviews_screen.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -105,7 +107,33 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 
-  Future<void> _showConfirmationDialog(BuildContext context) {
+  Future<void> _showConfirmationDialog(BuildContext context) async {
+    final authService = context.read<AuthService>();
+    if (!authService.isAuthenticated) {
+      final result = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Login Required'),
+          content: const Text('You need to login to make a booking'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Login'),
+            ),
+          ],
+        ),
+      );
+      
+      if (result == true) {
+        Navigator.pushNamed(context, '/login');
+      }
+      return;
+    }
+
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
