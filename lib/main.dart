@@ -14,7 +14,7 @@ void main() async {
   await authService.init();
   
   runApp(
-    ChangeNotifierProvider.value(
+    ChangeNotifierProvider<AuthService>.value(
       value: authService,
       child: const MyApp(),
     ),
@@ -26,23 +26,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthService(),
-      child: MaterialApp(
-        title: 'GOR Booking App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          useMaterial3: true,
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const SplashScreen(),  // Use SplashScreen as initial route
-          '/home': (context) => const HomePage(),
-          '/login': (context) => const LoginScreen(),  // Add this route
-          '/signup': (context) => const SignupScreen(),  // Add this route
-          '/register': (context) => const RegisterScreen(),  // Update this route
-        },
+    return MaterialApp(  // Remove the ChangeNotifierProvider here
+      title: 'GOR Booking App',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
       ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),  // Use SplashScreen as initial route
+        '/home': (context) => const HomePage(),
+        '/login': (context) => const LoginScreen(),  // Add this route
+        '/signup': (context) => const SignupScreen(),  // Add this route
+        '/register': (context) => const RegisterScreen(),  // Update this route
+      },
     );
   }
 }

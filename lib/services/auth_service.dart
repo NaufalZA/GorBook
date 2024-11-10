@@ -33,31 +33,36 @@ class AuthService with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<(bool, String)> login(String email, String password) async {
     try {
-      // TODO: Implement actual authentication with backend
-      if (email.isNotEmpty && password.isNotEmpty) {
-        final user = User(
-          name: "John Doe",
-          email: email,
-          phone: "+62 123 4567 890",
-        );
-        await _saveUserData(user);
-        return true;
+      if (email.isEmpty || password.isEmpty) {
+        return (false, 'Email and password cannot be empty');
       }
-      return false;
+      
+      // TODO: Implement actual authentication with backend
+      final user = User(
+        name: "John Doe",
+        email: email,
+        phone: "+62 123 4567 890",
+      );
+      await _saveUserData(user);
+      return (true, 'Login successful');
     } catch (e) {
-      return false;
+      return (false, 'Login failed: ${e.toString()}');
     }
   }
 
-  Future<bool> signup({
+  Future<(bool, String)> signup({
     required String name,
     required String email,
     required String password,
     required String phone,
   }) async {
     try {
+      if (name.isEmpty || email.isEmpty || password.isEmpty || phone.isEmpty) {
+        return (false, 'All fields must be filled');
+      }
+      
       // TODO: Implement actual signup with backend
       final user = User(
         name: name,
@@ -65,9 +70,9 @@ class AuthService with ChangeNotifier {
         phone: phone,
       );
       await _saveUserData(user);
-      return true;
+      return (true, 'Registration successful');
     } catch (e) {
-      return false;
+      return (false, 'Registration failed: ${e.toString()}');
     }
   }
 

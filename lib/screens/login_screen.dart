@@ -41,12 +41,17 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () async {
-                final success = await context.read<AuthService>().login(
+                final (success, message) = await context.read<AuthService>().login(
                   _emailController.text,
                   _passwordController.text,
                 );
-                if (success && mounted) {
-                  Navigator.pop(context);
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message)),
+                  );
+                  if (success) {
+                    Navigator.pop(context);
+                  }
                 }
               },
               child: const Text('Login'),

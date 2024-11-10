@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
@@ -66,14 +65,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 onPressed: () async {
-                  final success = await context.read<AuthService>().signup(
+                  final (success, message) = await context.read<AuthService>().signup(
                     name: _nameController.text,
                     email: _emailController.text,
                     password: _passwordController.text,
                     phone: _phoneController.text,
                   );
-                  if (success && mounted) {
-                    Navigator.pop(context);
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(message)),
+                    );
+                    if (success) {
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 child: const Text('Register'),
