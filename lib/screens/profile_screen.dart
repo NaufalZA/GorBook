@@ -31,10 +31,26 @@ class ProfileScreen extends StatelessWidget {
         final user = authService.currentUser!;
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Profile'),
+            title: const Text(
+              'Profil',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            centerTitle: true,
+            flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF5669FF), Color(0xFF4054EA)],
+                  stops: [0.5, 1.0],
+                ),
+              ),
+            ),
+            elevation: 0,
             actions: [
               IconButton(
-                icon: const Icon(Icons.logout),
+                icon: const Icon(Icons.logout, color: Colors.white),
                 onPressed: () => authService.logout(),
               ),
             ],

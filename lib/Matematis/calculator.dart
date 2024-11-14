@@ -65,54 +65,75 @@ class CalculatorState extends State<Calculator> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.all(20),
-            alignment: Alignment.centerRight,
-            child: Text(
-              _output,
-              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Matematis',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF5669FF), Color(0xFF4054EA)],
+              stops: [0.5, 1.0],
             ),
           ),
         ),
-        GridView.builder(
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-          itemCount: 20,  // Total buttons now is 20
-          itemBuilder: (context, index) {
-            final buttons = [
-              'AC', '←', '%', '÷',
-              '7', '8', '9', '×',
-              '4', '5', '6', '-',
-              '1', '2', '3', '+',
-                '🧮', '0', ',', '=' // Kalkulator icon
-            ];
-
-            return GestureDetector(
-              onTap: () => _buttonPressed(buttons[index]),
-              child: Container(
-                margin: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade100,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: buttons[index] == "←"
-                      ? Icon(Icons.backspace, size: 28, color: Colors.black87) // Icon backspace
-                      : buttons[index] == "🧮"
-                          ? Icon(Icons.calculate, size: 28, color: Colors.black87) // Kalkulator icon
-                          : Text(
-                              buttons[index],
-                              style: TextStyle(fontSize: 24, color: Colors.black87),
-                            ),
-                ),
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(20),
+              alignment: Alignment.centerRight,
+              child: Text(
+                _output,
+                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
               ),
-            );
-          },
-        ),
-      ],
+            ),
+          ),
+          GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+            itemCount: 20,  // Total buttons now is 20
+            itemBuilder: (context, index) {
+              final buttons = [
+                'AC', '←', '%', '÷',
+                '7', '8', '9', '×',
+                '4', '5', '6', '-',
+                '1', '2', '3', '+',
+                  '🧮', '0', ',', '=' // Kalkulator icon
+              ];
+
+              return GestureDetector(
+                onTap: () => _buttonPressed(buttons[index]),
+                child: Container(
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: buttons[index] == "←"
+                        ? Icon(Icons.backspace, size: 28, color: Colors.black87) // Icon backspace
+                        : buttons[index] == "🧮"
+                            ? Icon(Icons.calculate, size: 28, color: Colors.black87) // Kalkulator icon
+                            : Text(
+                                buttons[index],
+                                style: TextStyle(fontSize: 24, color: Colors.black87),
+                              ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

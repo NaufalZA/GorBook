@@ -35,6 +35,7 @@ flutter:
     - assets/images/gor_badminton.png
     - assets/images/gor_basket.png
     - assets/images/gor_futsal.png
+    - assets/images/foto.png
 
 flutter_launcher_icons:
   android: "launcher_icon"

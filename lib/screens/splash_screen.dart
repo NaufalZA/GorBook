@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     _controller.forward();
 
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacementNamed(context, '/home');
     });
   }
@@ -70,6 +70,48 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   ),
                 );
               },
+            ),
+          ),
+          // Profile photo
+          Positioned(
+            left: 20,
+            bottom: 80,
+            child: CircleAvatar(
+              radius: 40,
+              backgroundImage: AssetImage('assets/images/foto.png'),
+            ),
+          ),
+          // Personal information
+          Positioned(
+            left: 20,
+            bottom: 20,
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'NIM    : 152022168',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Nama : Naufal Zaidan',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

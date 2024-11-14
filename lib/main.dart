@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,  // Add this line to remove debug banner
       title: 'GOR Booking App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -66,12 +67,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;  // Change initial index to 1
 
   final List<Widget> _screens = [
-    Calculator(),          // First position
-    const CourtsListScreen(),  // Middle position
-    const ProfileScreen(), // Last position
+    Calculator(),  // Remove const keyword here
+    const CourtsListScreen(),  // This will now be shown first
+    const ProfileScreen(),
   ];
 
   @override
@@ -247,16 +248,27 @@ class CourtsListScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('GorBook'),
+        title: const Text(
+          'GorBook',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF5669FF), Color(0xFF4054EA)],
+              stops: [0.5, 1.0],
+            ),
+          ),
+        ),
         elevation: 0,
-        backgroundColor: Colors.transparent,
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 80), // Update padding to add more space at bottom
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 80),  // Adjusted top padding
         children: [
-          _buildSearchBar(),
-          const SizedBox(height: 24),
           _buildPopularCourts(context),
           const SizedBox(height: 24),
           _buildCourtsList(context),
@@ -265,29 +277,7 @@ class CourtsListScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchBar() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search courts...',
-          border: InputBorder.none,
-          icon: Icon(Icons.search, color: Colors.grey.shade400),
-        ),
-      ),
-    );
-  }
+  // Remove _buildSearchBar() method
 
   Widget _buildPopularCourts(BuildContext context) {
     return Column(
