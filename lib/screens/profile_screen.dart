@@ -11,12 +11,12 @@ class ProfileScreen extends StatelessWidget {
       builder: (context, authService, _) {
         if (!authService.isAuthenticated) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Profile')),
+            appBar: AppBar(title: const Text('Profil')),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Please login to view your profile'),
+                  const Text('Silahkan Login Terlebih Dahulu'),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () => Navigator.pushNamed(context, '/login'),
@@ -50,7 +50,6 @@ class ProfileScreen extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.person_outline),
                 title: Text(user.name),
-                subtitle: const Text('Member since 2024'),
               ),
               ListTile(
                 leading: const Icon(Icons.email_outlined),
@@ -61,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                 title: Text(user.phone),
               ),
               const Divider(),
-              const Text('Booking History', 
+              const Text('History Booking', 
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               FutureBuilder<List<Map<String, dynamic>>>(

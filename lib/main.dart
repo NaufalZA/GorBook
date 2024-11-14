@@ -141,7 +141,7 @@ class BottomNavBarCurved extends StatelessWidget {
                   icon: Icons.calculate,
                   selected: selectedIndex == 0,
                   onPressed: () => onItemSelected(0),
-                  selectedColor: primaryColor,
+                  selectedColor: const Color(0xFF5669FF), // Update color
                 ),
                 const SizedBox(width: 56),
                 NavBarIcon(
@@ -149,7 +149,7 @@ class BottomNavBarCurved extends StatelessWidget {
                   icon: Icons.person,
                   selected: selectedIndex == 2,
                   onPressed: () => onItemSelected(2),
-                  selectedColor: primaryColor,
+                  selectedColor: const Color(0xFF5669FF), // Update color
                 ),
               ],
             ),

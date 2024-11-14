@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(
-                labelText: 'Full Name',
+                labelText: 'Nama',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -43,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextField(
               controller: _phoneController,
               decoration: const InputDecoration(
-                labelText: 'Phone Number',
+                labelText: 'Nomor Telepon',
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.phone,
@@ -63,6 +63,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: const Color(0xFF5669FF), // Add this line
+                  foregroundColor: Colors.white, // Add this line
                 ),
                 onPressed: () async {
                   final (success, message) = await context.read<AuthService>().signup(
