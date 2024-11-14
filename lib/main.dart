@@ -285,7 +285,7 @@ class CourtsListScreen extends StatelessWidget {
         _buildModernCourtCard(
           context,
           'Gor Badminton Haji Nopal',
-          'From Rp 70.000/hour',
+          'Rp 70.000/Jam',
           Icons.sports_tennis,
           4.8,
           28,
@@ -294,7 +294,7 @@ class CourtsListScreen extends StatelessWidget {
         _buildModernCourtCard(
           context,
           'Gor Basket ITENAS',
-          'From Rp 70.000/hour',
+          'Rp 70.000/Jam',
           Icons.sports_basketball,
           4.6,
           42,
@@ -303,7 +303,7 @@ class CourtsListScreen extends StatelessWidget {
         _buildModernCourtCard(
           context,
           'Gor Futsal AutoWin',
-          'From Rp 70.000/hour',
+          'Rp 70.000/Jam',
           Icons.sports_soccer,
           4.7,
           35,

@@ -44,7 +44,7 @@ class _BookingScreenState extends State<BookingScreen> {
           children: [
             Card(
               child: ListTile(
-                title: Text('Date: ${DateFormat('dd/MM/yyyy').format(selectedDate)}'),
+                title: Text('Tanggal: ${DateFormat('dd/MM/yyyy').format(selectedDate)}'),
                 trailing: IconButton(
                   icon: const Icon(Icons.calendar_today),
                   onPressed: () async {
@@ -64,7 +64,7 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text('Select Time:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const Text('Pilih Jadwal:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -84,8 +84,8 @@ class _BookingScreenState extends State<BookingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Price: Rp 70.000/hour', style: TextStyle(fontSize: 16)),
-                    Text('Duration: 1 hour', style: TextStyle(fontSize: 16)),
+                    Text('Harga  : Rp 70.000/hour', style: TextStyle(fontSize: 16)),
+                    Text('Durasi : 1 hour', style: TextStyle(fontSize: 16)),
                   ],
                 ),
               ),
@@ -98,7 +98,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 onPressed: () => _showConfirmationDialog(context),
-                child: const Text('Confirm Booking'),
+                child: const Text('BOOKING'),
               ),
             ),
           ],

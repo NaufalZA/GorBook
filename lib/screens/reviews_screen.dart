@@ -62,7 +62,7 @@ class ReviewsScreen extends StatelessWidget {
                             future: authService.getCourtReviews(courtType),
                             builder: (context, snapshot) {
                               final reviewCount = snapshot.data?.length ?? 0;
-                              return Text('Based on $reviewCount reviews');
+                              return Text('$reviewCount Review');
                             },
                           ),
                         ],
@@ -87,7 +87,7 @@ class ReviewsScreen extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Recent Reviews (${reviews.length})', 
+              Text('Review Terbaru (${reviews.length})', 
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               ...reviews.map((review) => _buildReviewItem(
