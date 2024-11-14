@@ -24,7 +24,7 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book ${widget.courtType}'),
+        title: Text('${widget.courtType}'),
         actions: [
           IconButton(
             icon: const Icon(Icons.reviews),
@@ -84,7 +84,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Price: Rp 100.000/hour', style: TextStyle(fontSize: 16)),
+                    Text('Price: Rp 70.000/hour', style: TextStyle(fontSize: 16)),
                     Text('Duration: 1 hour', style: TextStyle(fontSize: 16)),
                   ],
                 ),
@@ -145,7 +145,7 @@ class _BookingScreenState extends State<BookingScreen> {
             Text('Court: ${widget.courtType}'),
             Text('Date: ${DateFormat('dd/MM/yyyy').format(selectedDate)}'),
             Text('Time: $selectedTime'),
-            const Text('Price: Rp 100.000'),
+            const Text('Price: Rp 70.000'),
           ],
         ),
         actions: [

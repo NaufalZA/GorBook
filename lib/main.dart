@@ -199,53 +199,69 @@ class CourtsListScreen extends StatelessWidget {
     String rating,
     String imageUrl,
   ) {
-    return Container(
-      width: 280,
-      margin: const EdgeInsets.only(right: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        image: DecorationImage(
-          image: AssetImage(imageUrl),
-          fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BookingScreen(courtType: name),
         ),
       ),
       child: Container(
+        width: 280,
+        margin: const EdgeInsets.only(right: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.transparent,
-              Colors.black.withOpacity(0.7),
-            ],
+          image: DecorationImage(
+            image: AssetImage(imageUrl),
+            fit: BoxFit.cover,
           ),
         ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              name,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const Icon(Icons.star, color: Colors.amber, size: 16),
-                const SizedBox(width: 4),
-                Text(
-                  rating,
-                  style: const TextStyle(color: Colors.white),
-                ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.transparent,
+                Colors.black.withOpacity(0.7),
               ],
             ),
-          ],
+          ),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Consumer<AuthService>(
+                builder: (context, authService, _) => FutureBuilder<double>(
+                  future: authService.getCourtRating(name),
+                  builder: (context, snapshot) {
+                    final rating = snapshot.data ?? 0.0;
+                    return Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                        const SizedBox(width: 4),
+                        Text(
+                          rating.toStringAsFixed(1),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -269,26 +285,29 @@ class CourtsListScreen extends StatelessWidget {
         _buildModernCourtCard(
           context,
           'Gor Badminton Haji Nopal',
-          'From Rp 50.000/hour',
+          'From Rp 70.000/hour',
           Icons.sports_tennis,
           4.8,
           28,
+          'assets/images/gor_badminton.png',
         ),
         _buildModernCourtCard(
           context,
           'Gor Basket ITENAS',
-          'From Rp 75.000/hour',
+          'From Rp 70.000/hour',
           Icons.sports_basketball,
           4.6,
           42,
+          'assets/images/gor_basket.png',
         ),
         _buildModernCourtCard(
           context,
           'Gor Futsal AutoWin',
-          'From Rp 100.000/hour',
+          'From Rp 70.000/hour',
           Icons.sports_soccer,
           4.7,
           35,
+          'assets/images/gor_futsal.png',
         ),
       ],
     );
@@ -301,94 +320,92 @@ class CourtsListScreen extends StatelessWidget {
     IconData icon,
     double rating,
     int reviews,
+    String imageUrl,
   ) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BookingScreen(courtType: title),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.horizontal(left: Radius.circular(16)),
+            child: Image.asset(
+              imageUrl,
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
             ),
-          );
-        },
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: Icon(icon, color: Theme.of(context).colorScheme.primary),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          price,
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                      ],
+                  const SizedBox(height: 4),
+                  Text(
+                    price,
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Consumer<AuthService>(
+                    builder: (context, authService, _) => FutureBuilder<List<Map<String, dynamic>>>(
+                      future: authService.getCourtReviews(title),
+                      builder: (context, snapshot) {
+                        final reviewCount = snapshot.data?.length ?? 0;
+                        return Row(
+                          children: [
+                            const Icon(Icons.star, color: Colors.amber, size: 16),
+                            const SizedBox(width: 4),
+                            FutureBuilder<double>(
+                              future: authService.getCourtRating(title),
+                              builder: (context, ratingSnapshot) {
+                                final rating = ratingSnapshot.data ?? 0.0;
+                                return Text(
+                                  rating.toStringAsFixed(1),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                );
+                              },
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '($reviewCount reviews)',
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                            const Spacer(),
+                            ElevatedButton(
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookingScreen(courtType: title),
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                minimumSize: const Size(60, 32),
+                              ),
+                              child: const Text('Book'),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Icon(Icons.star, color: Colors.amber, size: 16),
-                  const SizedBox(width: 4),
-                  Text(
-                    rating.toString(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '($reviews reviews)',
-                    style: TextStyle(color: Colors.grey.shade600),
-                  ),
-                  const Spacer(),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BookingScreen(courtType: title),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text('Book Now'),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
