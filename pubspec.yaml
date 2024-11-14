@@ -30,6 +30,9 @@ flutter:
     - assets/images/splash_bg.png
     - assets/images/logo.png
     - assets/images/splash_image.png
+    - assets/images/gor_badminton.png
+    - assets/images/gor_basket.png
+    - assets/images/gor_futsal.png
 
 flutter_launcher_icons:
   android: "launcher_icon"

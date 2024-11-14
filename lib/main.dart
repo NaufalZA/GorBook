@@ -170,15 +170,21 @@ class CourtsListScreen extends StatelessWidget {
             children: [
               _buildPopularCourtCard(
                 context,
-                'Badminton Pro Court',
+                'Gor Badminton Haji Nopal',
                 '4.8',
-                'assets/images/badminton.jpg',
+                'assets/images/gor_badminton.png',
               ),
               _buildPopularCourtCard(
                 context,
-                'Premium Futsal',
+                'Gor Basket ITENAS',
+                '4.8',
+                'assets/images/gor_basket.png',
+              ),
+              _buildPopularCourtCard(
+                context,
+                'Gor Futsal AutoWin',
                 '4.6',
-                'assets/images/futsal.jpg',
+                'assets/images/gor_futsal.png',
               ),
             ],
           ),
@@ -262,7 +268,7 @@ class CourtsListScreen extends StatelessWidget {
         const SizedBox(height: 16),
         _buildModernCourtCard(
           context,
-          'Lapangan Badminton',
+          'Gor Badminton Haji Nopal',
           'From Rp 50.000/hour',
           Icons.sports_tennis,
           4.8,
@@ -270,7 +276,7 @@ class CourtsListScreen extends StatelessWidget {
         ),
         _buildModernCourtCard(
           context,
-          'Lapangan Basket',
+          'Gor Basket ITENAS',
           'From Rp 75.000/hour',
           Icons.sports_basketball,
           4.6,
@@ -278,7 +284,7 @@ class CourtsListScreen extends StatelessWidget {
         ),
         _buildModernCourtCard(
           context,
-          'Lapangan Futsal',
+          'Gor Futsal AutoWin',
           'From Rp 100.000/hour',
           Icons.sports_soccer,
           4.7,

@@ -64,8 +64,19 @@ class ProfileScreen extends StatelessWidget {
               const Text('Booking History', 
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              _buildHistoryItem('Lapangan Badminton', '01/03/2024', '08:00'),
-              _buildHistoryItem('Lapangan Futsal', '28/02/2024', '16:00'),
+              FutureBuilder<List<Map<String, dynamic>>>(
+                future: authService.getUserBookings(user.email),
+                builder: (context, snapshot) {
+                  final bookings = snapshot.data ?? [];
+                  return Column(
+                    children: bookings.map((booking) => _buildHistoryItem(
+                      booking['courtType'],
+                      booking['date'],
+                      booking['time'],
+                    )).toList(),
+                  );
+                },
+              ),
             ],
           ),
         );

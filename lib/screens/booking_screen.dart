@@ -154,8 +154,15 @@ class _BookingScreenState extends State<BookingScreen> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Implement booking processing
+            onPressed: () async {
+              await authService.addBooking(authService.currentUser!.email, {
+                'courtType': widget.courtType,
+                'date': DateFormat('dd/MM/yyyy').format(selectedDate),
+                'time': selectedTime,
+                'price': 100000,
+                'timestamp': DateTime.now().toIso8601String(),
+              });
+              
               Navigator.pop(context);
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(

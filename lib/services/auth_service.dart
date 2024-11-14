@@ -99,4 +99,35 @@ class AuthService with ChangeNotifier {
     _isAuthenticated = false;
     notifyListeners();
   }
+
+  Future<List<Map<String, dynamic>>> getUserBookings(String email) async {
+    final bookingsJson = _prefs.getString('bookings_$email') ?? '[]';
+    return List<Map<String, dynamic>>.from(jsonDecode(bookingsJson));
+  }
+
+  Future<void> addBooking(String email, Map<String, dynamic> booking) async {
+    final bookings = await getUserBookings(email);
+    bookings.add(booking);
+    await _prefs.setString('bookings_$email', jsonEncode(bookings));
+    notifyListeners();
+  }
+
+  Future<List<Map<String, dynamic>>> getCourtReviews(String courtType) async {
+    final reviewsJson = _prefs.getString('reviews_$courtType') ?? '[]';
+    return List<Map<String, dynamic>>.from(jsonDecode(reviewsJson));
+  }
+
+  Future<void> addReview(String courtType, Map<String, dynamic> review) async {
+    final reviews = await getCourtReviews(courtType);
+    reviews.add(review);
+    await _prefs.setString('reviews_$courtType', jsonEncode(reviews));
+    notifyListeners();
+  }
+
+  Future<double> getCourtRating(String courtType) async {
+    final reviews = await getCourtReviews(courtType);
+    if (reviews.isEmpty) return 0;
+    final total = reviews.fold(0.0, (sum, item) => sum + (item['rating'] as num));
+    return total / reviews.length;
+  }
 }

@@ -1,6 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../services/auth_service.dart';
 
 class ReviewsScreen extends StatelessWidget {
   final String courtType;
@@ -28,42 +29,77 @@ class ReviewsScreen extends StatelessWidget {
   }
 
   Widget _buildReviewStats() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('4.5', style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold)),
-                SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(children: [Icon(Icons.star, color: Colors.amber), Icon(Icons.star, color: Colors.amber), 
-                                 Icon(Icons.star, color: Colors.amber), Icon(Icons.star, color: Colors.amber), 
-                                 Icon(Icons.star_half, color: Colors.amber)]),
-                    Text('Based on 28 reviews'),
-                  ],
-                ),
-              ],
+    return Consumer<AuthService>(
+      builder: (context, authService, _) => FutureBuilder<double>(
+        future: authService.getCourtRating(courtType),
+        builder: (context, snapshot) {
+          final rating = snapshot.data ?? 0.0;
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(rating.toStringAsFixed(1), 
+                          style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold)),
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: List.generate(5, (index) {
+                              if (index < rating.floor()) {
+                                return const Icon(Icons.star, color: Colors.amber);
+                              } else if (index == rating.floor() && rating % 1 > 0) {
+                                return const Icon(Icons.star_half, color: Colors.amber);
+                              }
+                              return const Icon(Icons.star_border, color: Colors.amber);
+                            }),
+                          ),
+                          FutureBuilder<List<Map<String, dynamic>>>(
+                            future: authService.getCourtReviews(courtType),
+                            builder: (context, snapshot) {
+                              final reviewCount = snapshot.data?.length ?? 0;
+                              return Text('Based on $reviewCount reviews');
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildReviewsList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Recent Reviews', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
-        _buildReviewItem('John Doe', 5, 'Great court condition!', DateTime.now()),
-        _buildReviewItem('Jane Smith', 4, 'Good facilities', DateTime.now().subtract(const Duration(days: 2))),
-      ],
+    return Consumer<AuthService>(
+      builder: (context, authService, _) => FutureBuilder<List<Map<String, dynamic>>>(
+        future: authService.getCourtReviews(courtType),
+        builder: (context, snapshot) {
+          final reviews = snapshot.data ?? [];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Recent Reviews (${reviews.length})', 
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              ...reviews.map((review) => _buildReviewItem(
+                review['name'], 
+                review['rating'], 
+                review['comment'],
+                DateTime.parse(review['date']),
+              )),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -104,50 +140,63 @@ class ReviewsScreen extends StatelessWidget {
 
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add Review'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ValueListenableBuilder(
-              valueListenable: _rating,
-              builder: (context, rating, _) => Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(5, (index) => IconButton(
-                  icon: Icon(
-                    index < rating ? Icons.star : Icons.star_border,
-                    color: Colors.amber,
-                  ),
-                  onPressed: () => _rating.value = index + 1,
-                )),
+      builder: (context) => Consumer<AuthService>(
+        builder: (context, authService, _) => AlertDialog(
+          title: const Text('Add Review'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ValueListenableBuilder(
+                valueListenable: _rating,
+                builder: (context, rating, _) => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(5, (index) => IconButton(
+                    icon: Icon(
+                      index < rating ? Icons.star : Icons.star_border,
+                      color: Colors.amber,
+                    ),
+                    onPressed: () => _rating.value = index + 1,
+                  )),
+                ),
               ),
+              TextField(
+                controller: _commentController,
+                decoration: const InputDecoration(
+                  hintText: 'Write your review...',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 3,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
             ),
-            TextField(
-              controller: _commentController,
-              decoration: const InputDecoration(
-                hintText: 'Write your review...',
-                border: OutlineInputBorder(),
-              ),
-              maxLines: 3,
+            ElevatedButton(
+              onPressed: () async {
+                if (!authService.isAuthenticated) {
+                  Navigator.pushNamed(context, '/login');
+                  return;
+                }
+                
+                await authService.addReview(courtType, {
+                  'name': authService.currentUser!.name,
+                  'rating': _rating.value,
+                  'comment': _commentController.text,
+                  'date': DateTime.now().toIso8601String(),
+                });
+                
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Review submitted successfully!')),
+                );
+              },
+              child: const Text('Submit'),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: Implement review submission
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Review submitted successfully!')),
-              );
-            },
-            child: const Text('Submit'),
-          ),
-        ],
       ),
     );
   }
