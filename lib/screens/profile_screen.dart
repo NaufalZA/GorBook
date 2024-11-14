@@ -58,9 +58,18 @@ class ProfileScreen extends StatelessWidget {
           body: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 50,
-                child: Icon(Icons.person, size: 50),
+                backgroundImage: AssetImage('assets/images/foto.png'),
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: Image.asset(
+                  'assets/images/foto.png',
+                  fit: BoxFit.cover,
+                  width: 100,
+                  height: 100,
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
               ListTile(

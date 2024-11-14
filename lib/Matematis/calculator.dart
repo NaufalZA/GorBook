@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'currency.dart';  // Add this import
 
 class Calculator extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class CalculatorState extends State<Calculator> {
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Kalkulator'),
-              Tab(text: 'Lainnya'),
+              Tab(text: 'Currency'),
             ],
             labelColor: Colors.white,
             indicatorColor: Colors.white,
@@ -42,7 +43,7 @@ class CalculatorState extends State<Calculator> {
         body: TabBarView(
           children: [
             CalculatorTab(),
-            LainnyaTab(),
+            Currency(),  // Replace LainnyaTab with Currency
           ],
         ),
       ),
@@ -162,18 +163,6 @@ class _CalculatorTabState extends State<CalculatorTab> {
           },
         ),
       ],
-    );
-  }
-}
-
-class LainnyaTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Konten Lainnya',
-        style: TextStyle(fontSize: 24),
-      ),
     );
   }
 }

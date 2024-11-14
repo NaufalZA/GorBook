@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:intl/intl.dart';
-
 
 class Currency extends StatefulWidget {
   @override
@@ -15,18 +12,20 @@ class _CurrencyState extends State<Currency> {
   String _fromCurrency = 'IDR';
   String _toCurrency = 'USD';
 
-  void _convertCurrency() async {
-    final response = await http.get(Uri.parse(
-        'https://api.exchangerate-api.com/v4/latest/$_fromCurrency'));
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      setState(() {
-        double rate = data['rates'][_toCurrency];
-        _convertedValue = _inputValue * rate;
-      });
-    } else {
-      throw Exception('Gagal mengambil data nilai tukar');
-    }
+  // Static conversion rates to USD
+  final Map<String, double> _ratesInUSD = {
+    'USD': 1.0,
+    'IDR': 0.000065, // 1 IDR = 0.000065 USD
+    'EUR': 1.09,      // 1 EUR = 1.09 USD
+  };
+
+  void _convertCurrency() {
+    setState(() {
+      // Convert to USD first
+      double amountInUSD = _inputValue * _ratesInUSD[_fromCurrency]!;
+      // Then convert from USD to target currency
+      _convertedValue = amountInUSD / _ratesInUSD[_toCurrency]!;
+    });
   }
 
   String _formatCurrency(double value) {

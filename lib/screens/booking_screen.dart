@@ -120,7 +120,7 @@ class _BookingScreenState extends State<BookingScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
+              child: const Text('Batal'),
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context, true),
@@ -139,7 +139,7 @@ class _BookingScreenState extends State<BookingScreen> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Booking'),
+        title: const Text('Konfirmasi Booking'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,10 +168,10 @@ class _BookingScreenState extends State<BookingScreen> {
               Navigator.pop(context);
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Booking successful!')),
+                const SnackBar(content: Text('Booking Berhasil!')),
               );
             },
-            child: const Text('Confirm'),
+            child: const Text('YA'),
           ),
         ],
       ),

@@ -162,7 +162,7 @@ class ReviewsScreen extends StatelessWidget {
               TextField(
                 controller: _commentController,
                 decoration: const InputDecoration(
-                  hintText: 'Write your review...',
+                  hintText: 'Tulis Penilaian Kamu',
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 3,
@@ -190,7 +190,7 @@ class ReviewsScreen extends StatelessWidget {
                 
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Review submitted successfully!')),
+                  const SnackBar(content: Text('Penilaian Kamu Berhasil Ditambahkan!')),
                 );
               },
               child: const Text('Submit'),
