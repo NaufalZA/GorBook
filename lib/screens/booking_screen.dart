@@ -96,6 +96,8 @@ class _BookingScreenState extends State<BookingScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: const Color(0xFF5669FF), // Add this line
+                  foregroundColor: Colors.white, // Add this line for text color
                 ),
                 onPressed: () => _showConfirmationDialog(context),
                 child: const Text('BOOKING'),

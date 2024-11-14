@@ -5,7 +5,6 @@ import 'screens/booking_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';  // Add this import
-import 'screens/signup_screen.dart';  // Add this import
 import 'screens/register_screen.dart';  // Update this import
 import 'Matematis/calculator.dart';  // Add this import
 
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'GOR Booking App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2563EB),
+          seedColor: const Color(0xFF5669FF), // Changed this color
           brightness: Brightness.light,
         ),
         useMaterial3: true,
@@ -53,7 +52,6 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),  // Use SplashScreen as initial route
         '/home': (context) => const HomePage(),
         '/login': (context) => const LoginScreen(),  // Add this route
-        '/signup': (context) => const SignupScreen(),  // Add this route
         '/register': (context) => const RegisterScreen(),  // Update this route
       },
     );
@@ -123,7 +121,8 @@ class BottomNavBarCurved extends StatelessWidget {
           Center(
             heightFactor: 0.6,
             child: FloatingActionButton(
-              backgroundColor: primaryColor,
+              backgroundColor: const Color(0xFF5669FF), // Update FAB color
+              shape: const CircleBorder(), // Add this line
               child: const ImageIcon(
                 AssetImage('assets/images/icon.png'),
                 color: Colors.white,
@@ -135,7 +134,7 @@ class BottomNavBarCurved extends StatelessWidget {
           SizedBox(
             height: height,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Change from spaceAround
               children: [
                 NavBarIcon(
                   text: "Math",
@@ -216,7 +215,7 @@ class NavBarIcon extends StatelessWidget {
     required this.icon,
     required this.selected,
     required this.onPressed,
-    this.selectedColor = const Color(0xffFF8527),
+    this.selectedColor = const Color(0xFF5669FF), // Update selected color
     this.defaultColor = Colors.black54,
   });
 
@@ -254,7 +253,7 @@ class CourtsListScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 80), // Update padding to add more space at bottom
         children: [
           _buildSearchBar(),
           const SizedBox(height: 24),
@@ -531,7 +530,7 @@ class CourtsListScreen extends StatelessWidget {
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                backgroundColor: const Color(0xFF5669FF), // Update this color
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
                                 minimumSize: const Size(60, 32),
