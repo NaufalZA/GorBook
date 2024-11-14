@@ -39,11 +39,21 @@ class AuthService with ChangeNotifier {
         return (false, 'Email and password cannot be empty');
       }
       
-      // TODO: Implement actual authentication with backend
+      // Get registered user data
+      final registered = _prefs.getString('registered_$email');
+      if (registered == null) {
+        return (false, 'User not found');
+      }
+
+      final userData = jsonDecode(registered);
+      if (userData['password'] != password) {
+        return (false, 'Invalid password');
+      }
+      
       final user = User(
-        name: "John Doe",
-        email: email,
-        phone: "+62 123 4567 890",
+        name: userData['name'],
+        email: userData['email'],
+        phone: userData['phone'],
       );
       await _saveUserData(user);
       return (true, 'Login successful');
@@ -63,7 +73,14 @@ class AuthService with ChangeNotifier {
         return (false, 'All fields must be filled');
       }
       
-      // TODO: Implement actual signup with backend
+      // Save registered user credentials
+      await _prefs.setString('registered_$email', jsonEncode({
+        'name': name,
+        'email': email,
+        'password': password,
+        'phone': phone,
+      }));
+      
       final user = User(
         name: name,
         email: email,
