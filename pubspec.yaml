@@ -30,6 +30,7 @@ flutter:
   assets:
     - assets/images/splash_bg.png
     - assets/images/logo.png
+    - assets/images/icon.png
     - assets/images/splash_image.png
     - assets/images/gor_badminton.png
     - assets/images/gor_basket.png

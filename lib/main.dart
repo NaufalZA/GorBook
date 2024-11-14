@@ -7,6 +7,7 @@ import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';  // Add this import
 import 'screens/signup_screen.dart';  // Add this import
 import 'screens/register_screen.dart';  // Update this import
+import 'Matematis/calculator.dart';  // Add this import
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,8 +71,9 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const CourtsListScreen(),
-    const ProfileScreen(),
+    Calculator(),          // First position
+    const CourtsListScreen(),  // Middle position
+    const ProfileScreen(), // Last position
   ];
 
   @override
@@ -85,12 +87,18 @@ class _HomePageState extends State<HomePage> {
         },
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.sports_tennis),
-            label: 'Courts',
+            icon: Icon(Icons.calculate),
+            label: 'Math',
+          ),
+          NavigationDestination(
+            icon: ImageIcon(
+              AssetImage('assets/images/icon.png'),
+            ),
+            label: 'GorBook',
           ),
           NavigationDestination(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'Profil',
           ),
         ],
       ),
@@ -106,7 +114,7 @@ class CourtsListScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('GOR Booking'),
+        title: const Text('GorBook'),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -155,7 +163,7 @@ class CourtsListScreen extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 4),
           child: Text(
-            'Popular Courts',
+            'For You GOR',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -274,7 +282,7 @@ class CourtsListScreen extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 4),
           child: Text(
-            'All Courts',
+            'List GOR',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -354,7 +362,7 @@ class CourtsListScreen extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.grey.shade600,
                     ),
-                  ),
+                  ),  // Add missing comma and closing parenthesis here
                   const SizedBox(height: 8),
                   Consumer<AuthService>(
                     builder: (context, authService, _) => FutureBuilder<List<Map<String, dynamic>>>(
