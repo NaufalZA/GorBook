@@ -79,29 +79,163 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true, // Important for curved navbar
       body: _screens[_selectedIndex],
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: BottomNavBarCurved(
         selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
+        onItemSelected: (index) {
           setState(() => _selectedIndex = index);
         },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.calculate),
-            label: 'Math',
+      ),
+    );
+  }
+}
+
+// Add these new classes
+class BottomNavBarCurved extends StatelessWidget {
+  final int selectedIndex;
+  final Function(int) onItemSelected;
+
+  const BottomNavBarCurved({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double height = 56;
+
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final secondaryColor = Colors.black54;
+    final backgroundColor = Colors.white;
+
+    return BottomAppBar(
+      color: Colors.transparent,
+      elevation: 0,
+      child: Stack(
+        children: [
+          CustomPaint(
+            size: Size(size.width, height + 6),
+            painter: BottomNavCurvePainter(backgroundColor: backgroundColor),
           ),
-          NavigationDestination(
-            icon: ImageIcon(
-              AssetImage('assets/images/icon.png'),
+          Center(
+            heightFactor: 0.6,
+            child: FloatingActionButton(
+              backgroundColor: primaryColor,
+              child: const ImageIcon(
+                AssetImage('assets/images/icon.png'),
+                color: Colors.white,
+              ),
+              elevation: 0.1,
+              onPressed: () => onItemSelected(1),
             ),
-            label: 'GorBook',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.person),
-            label: 'Profil',
+          SizedBox(
+            height: height,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                NavBarIcon(
+                  text: "Math",
+                  icon: Icons.calculate,
+                  selected: selectedIndex == 0,
+                  onPressed: () => onItemSelected(0),
+                  selectedColor: primaryColor,
+                ),
+                const SizedBox(width: 56),
+                NavBarIcon(
+                  text: "Profile",
+                  icon: Icons.person,
+                  selected: selectedIndex == 2,
+                  onPressed: () => onItemSelected(2),
+                  selectedColor: primaryColor,
+                ),
+              ],
+            ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class BottomNavCurvePainter extends CustomPainter {
+  final Color backgroundColor;
+  final double insetRadius;
+
+  BottomNavCurvePainter({
+    this.backgroundColor = Colors.white,
+    this.insetRadius = 38,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = backgroundColor
+      ..style = PaintingStyle.fill;
+    Path path = Path()..moveTo(0, 12);
+
+    double insetCurveBeginnningX = size.width / 2 - insetRadius;
+    double insetCurveEndX = size.width / 2 + insetRadius;
+    double transitionToInsetCurveWidth = size.width * .05;
+
+    path.quadraticBezierTo(size.width * 0.20, 0,
+        insetCurveBeginnningX - transitionToInsetCurveWidth, 0);
+    path.quadraticBezierTo(
+        insetCurveBeginnningX, 0, insetCurveBeginnningX, insetRadius / 2);
+
+    path.arcToPoint(Offset(insetCurveEndX, insetRadius / 2),
+        radius: const Radius.circular(10.0), clockwise: false);
+
+    path.quadraticBezierTo(
+        insetCurveEndX, 0, insetCurveEndX + transitionToInsetCurveWidth, 0);
+    path.quadraticBezierTo(size.width * 0.80, 0, size.width, 12);
+    path.lineTo(size.width, size.height + 56);
+    path.lineTo(0, size.height + 56);
+    
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+class NavBarIcon extends StatelessWidget {
+  final String text;
+  final IconData icon;
+  final bool selected;
+  final Function() onPressed;
+  final Color selectedColor;
+  final Color defaultColor;
+
+  const NavBarIcon({
+    super.key,
+    required this.text,
+    required this.icon,
+    required this.selected,
+    required this.onPressed,
+    this.selectedColor = const Color(0xffFF8527),
+    this.defaultColor = Colors.black54,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          onPressed: onPressed,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          icon: Icon(
+            icon,
+            size: 25,
+            color: selected ? selectedColor : defaultColor,
+          ),
+        ),
+      ],
     );
   }
 }
